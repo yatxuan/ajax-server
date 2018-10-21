@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试页面</title>
+    <script src="jquery-1.11.3.js"></script>
+</head>
+<body>
+<div>
+    <input type="button" value="测试" onclick="get1()">
+    <img src="http://127.0.0.1:8080/test/get1">
+</div>
+</body>
+<script>
+    function get1() {
+
+        var base = "http://127.0.0.1:8080/test";
+
+        $.get(base + "/get1", function (data) {
+            alert("get1");
+            alert(data);
+        });
+
+        $.ajax({
+            type: "get",
+            url: base + "/get1",
+            dataType: "jsonp",
+            success: function (data) {
+                alert("get1+jsonp");
+                alert(data);
+            }
+        });
+
+        $.ajax({
+            type: "post",
+            url: base + "/postJson",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify({name: "YatXuan"}),
+            success: function (json) {
+                alert("postJson");
+                alert(json);
+            }
+        });
+
+        $.ajax({
+            type: "get",
+            url: base + "/getCookie",
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (json) {
+                alert("getCookie");
+                alert(json);
+            }
+        });
+
+        $.ajax({
+            type: "get",
+            url: base + "/getHeader",
+            headers: {
+                "x-header1": "AAA"
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("x-header2", "BBB")
+            },
+            success: function (json) {
+                alert("getHeader");
+                alert(json);
+            }
+        });
+    }
+</script>
+</html>
