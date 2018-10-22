@@ -46,6 +46,7 @@
             type: "get",
             url: base + "/getCookie",
             xhrFields: {
+                // 设置请求可以携带cookie
                 withCredentials: true
             },
             success: function (json) {

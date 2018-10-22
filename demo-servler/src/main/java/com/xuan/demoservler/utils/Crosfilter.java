@@ -21,16 +21,18 @@ public class Crosfilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         // TODO Auto-generated method stub
 
         HttpServletResponse res = (HttpServletResponse) response;
 
         HttpServletRequest req = (HttpServletRequest) request;
 
-        String origin = req.getHeader("Origin");
+        /*
+          这里使用全局匹配，不推荐使用，应采用下面这种配置
+          res.addHeader("Access-Control-Allow-Origin", "*");*/
 
+        String origin = req.getHeader("Origin");
         if (!org.springframework.util.StringUtils.isEmpty(origin)) {
             //带cookie的时候，origin必须是全匹配，不能使用*，这里设置域名
             res.addHeader("Access-Control-Allow-Origin", origin);
@@ -39,9 +41,10 @@ public class Crosfilter implements Filter {
         //调用方法
         res.addHeader("Access-Control-Allow-Methods", "*");
 
-        String headers = req.getHeader("Access-Control-Request-Headers");
+        res.setHeader("Access-Control-Allow-Headers", "DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,SessionToken");
 
         // 支持所有自定义头
+        String headers = req.getHeader("Access-Control-Request-Headers");
         if (!org.springframework.util.StringUtils.isEmpty(headers)) {
             res.addHeader("Access-Control-Allow-Headers", headers);
         }
